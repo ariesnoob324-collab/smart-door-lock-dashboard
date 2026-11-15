@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Smart Door Lock IoT</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1220; --panel:#151f30; --muted:#94a3b8; --line:#263449; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; padding:24px 16px;
+      font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+      color:#f8fafc; background:radial-gradient(circle at top,#20324d 0,#0b1220 48%,#080d17 100%);
+      display:flex; justify-content:center; align-items:center;
+    }
+    main { width:min(100%,460px); }
+    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+    h1 { font-size:19px; margin:0; letter-spacing:.04em; }
+    .tag { font-size:11px; color:#a7f3d0; border:1px solid #166534; background:#123524; padding:6px 9px; border-radius:999px; }
+    .card { background:rgba(21,31,48,.94); border:1px solid var(--line); border-radius:20px; padding:20px; margin:12px 0; box-shadow:0 14px 35px #0004; }
+    .label { font-size:11px; color:var(--muted); letter-spacing:.12em; font-weight:700; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .connection { display:flex; align-items:center; gap:9px; margin-top:10px; font-weight:650; }
+    .dot { width:9px; height:9px; border-radius:50%; background:#64748b; display:inline-block; }
+    .dot.on { background:#4ade80; box-shadow:0 0 12px #4ade8080; }
+    .dot.off { background:#fb7185; }
+    #doorState { font-size:32px; font-weight:800; margin:8px 0 2px; letter-spacing:.02em; }
+    #doorDesc { color:var(--muted); font-size:13px; }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+    button { border:0; border-radius:15px; min-height:64px; color:white; font-size:15px; font-weight:750; cursor:pointer; }
+    button:disabled { opacity:.38; cursor:not-allowed; }
+    #unlock { background:linear-gradient(135deg,#15803d,#166534); }
+    #lock { background:linear-gradient(135deg,#475569,#334155); }
+    .hint { font-size:12px; line-height:1.55; color:var(--muted); }
+    #log { font:12px ui-monospace,monospace; color:#cbd5e1; white-space:pre-wrap; min-height:34px; }
+    footer { text-align:center; color:#64748b; font-size:11px; margin-top:18px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>SMART DOOR LOCK</h1>
+    <span class="tag">WOKWI IoT DEMO</span>
+  </header>
+
+  <section class="card">
+    <div class="row">
+      <span class="label">KONEKSI MQTT</span>
+      <span class="label" id="brokerLabel">EMQX PUBLIC</span>
+    </div>
+    <div class="connection">
+      <span class="dot" id="connectionDot"></span>
+      <span id="connectionText">Menghubungkan...</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="label">STATUS PINTU DARI ESP32</div>
+    <div id="doorState">MENUNGGU</div>
+    <div id="doorDesc">Menunggu status dari simulasi Wokwi.</div>
+    <div class="actions">
+      <button id="unlock" disabled>BUKA PINTU</button>
+      <button id="lock" disabled>KUNCI PINTU</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="label">AKTIVITAS</div>
+    <p id="log">Dashboard sedang memulai koneksi.</p>
+    <p class="hint">Status hanya berubah setelah ESP32 mengirim konfirmasi melalui MQTT. Jalankan simulasi Wokwi terlebih dahulu.</p>
+  </section>
+
+  <footer>SMART DOOR LOCK IoT • ARIES HARIANTO • SIMULASI AKADEMIK</footer>
+</main>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+  // Nilai ini HARUS sama dengan DEVICE_ID dan DEMO_TOKEN di sketch.ino.
+  // Ini hanya identitas demo, BUKAN autentikasi yang aman.
+  const DEVICE_ID = "ariesharianto-smartlock-demo-7f3a91";
+  const DEMO_TOKEN = "ARIES-DEMO-LOCK-7F3A91";
+
+  const TOPIC_COMMAND = DEVICE_ID + "/command";
+  const TOPIC_STATUS = DEVICE_ID + "/status";
+  const BROKER_URL = "wss://broker.emqx.io:8084/mqtt";
+
+  const $ = (id) => document.getElementById(id);
+  const unlockButton = $("unlock");
+  const lockButton = $("lock");
+
+  function setConnection(connected, text) {
+    $("connectionDot").className = "dot " + (connected ? "on" : "off");
+    $("connectionText").textContent = text;
+    unlockButton.disabled = !connected;
+    lockButton.disabled = !connected;
+  }
+
+  function showStatus(message) {
+    const parts = message.split("|");
+    const state = parts[0];
+
+    if (state === "UNLOCKED") {
+      $("doorState").textContent = "TERBUKA";
+      $("doorState").style.color = "#4ade80";
+      $("doorDesc").textContent = "ESP32 mengonfirmasi kunci terbuka.";
+    } else if (state === "LOCKED") {
+      $("doorState").textContent = "TERKUNCI";
+      $("doorState").style.color = "#cbd5e1";
+      $("doorDesc").textContent = "ESP32 mengonfirmasi kunci terkunci.";
+    } else {
+      return;
+    }
+
+    $("log").textContent = "Status terakhir diterima: " + new Date().toLocaleTimeString();
+  }
+
+  function sendCommand(command) {
+    if (!client || !client.connected) return;
+    client.publish(TOPIC_COMMAND, command + "|" + DEMO_TOKEN, { qos: 0, retain: false });
+    $("log").textContent = "Perintah " + command + " dikirim. Menunggu konfirmasi ESP32...";
+  }
+
+  unlockButton.addEventListener("click", () => sendCommand("UNLOCK"));
+  lockButton.addEventListener("click", () => sendCommand("LOCK"));
+
+  let client;
+  if (typeof mqtt === "undefined") {
+    setConnection(false, "Library MQTT.js gagal dimuat");
+    $("log").textContent = "Periksa koneksi internet atau CDN MQTT.js.";
+  } else {
+    const clientId = "webSmartLock_" + Math.random().toString(16).slice(2, 10);
+    client = mqtt.connect(BROKER_URL, {
+      clientId,
+      clean: true,
+      connectTimeout: 10000,
+      reconnectPeriod: 3000
+    });
+
+    client.on("connect", () => {
+      setConnection(true, "Terhubung ke broker");
+      client.subscribe(TOPIC_STATUS, { qos: 0 }, (err) => {
+        if (err) $("log").textContent = "Gagal subscribe status: " + err.message;
+        else $("log").textContent = "Terhubung. Menunggu status ESP32...";
+      });
+    });
+
+    client.on("reconnect", () => setConnection(false, "Menyambungkan ulang..."));
+    client.on("offline", () => setConnection(false, "Offline"));
+    client.on("error", (err) => {
+      setConnection(false, "Koneksi bermasalah");
+      $("log").textContent = "MQTT error: " + err.message;
+    });
+
+    client.on("message", (topic, payload) => {
+      if (topic === TOPIC_STATUS) showStatus(payload.toString());
+    });
+  }
+</script>
+</body>
+</html>
