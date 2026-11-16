@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -13,108 +13,167 @@
   --panel:#111c2d;
   --line:#26364b;
   --muted:#94a3b8;
-  --green:#22c55e;
-  --blue:#0284c7;
+  --green:#16a34a;
 }
 * {box-sizing:border-box}
 body {
   margin:0;
+  padding:20px;
   min-height:100vh;
-  padding:22px;
   background:var(--bg);
   color:white;
-  font-family:system-ui,-apple-system,sans-serif;
+  font-family:system-ui,sans-serif;
   display:flex;
   justify-content:center;
+}
+main {width:100%;max-width:440px}
+header {
+  display:flex;
+  justify-content:space-between;
   align-items:center;
+  margin:12px 0 24px;
 }
-main {width:100%;max-width:430px}
-header {text-align:center;margin-bottom:30px}
 .logo {
-  font-size:43px;
+  font-size:32px;
   font-weight:900;
-  letter-spacing:7px;
-}
-.subtitle {
-  color:var(--muted);
-  font-size:11px;
   letter-spacing:4px;
 }
 .card {
   background:var(--panel);
   border:1px solid var(--line);
-  border-radius:23px;
-  padding:23px;
+  border-radius:20px;
+  padding:20px;
   margin-bottom:15px;
 }
-.hidden {display:none!important}
-h2 {font-size:26px;margin:0 0 20px}
-input {
-  width:100%;
-  padding:18px;
-  background:var(--bg);
-  border:1px solid var(--line);
-  border-radius:14px;
-  color:white;
-  font-size:18px;
-  outline:none;
-}
-button {
-  width:100%;
-  padding:18px;
-  border:0;
-  border-radius:14px;
-  margin-top:12px;
-  font-size:17px;
-  font-weight:800;
-  color:white;
-  cursor:pointer;
-}
-button:disabled {opacity:.35;cursor:not-allowed}
-.primary {background:var(--blue)}
-.bio {background:#26364b}
-.secondary {background:#263449}
-.open {background:#15803d}
-.close {background:#334155}
 .muted {color:var(--muted);font-size:13px}
-.big {
-  font-size:35px;
-  font-weight:900;
-  margin:15px 0 5px;
-}
-.actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:24px;
-}
-.actions button {margin:0;min-height:85px}
-.connection {
+.row {
   display:flex;
   align-items:center;
+  justify-content:space-between;
   gap:10px;
-  margin-top:12px;
-  font-weight:700;
 }
 .dot {
-  width:10px;
-  height:10px;
+  width:9px;height:9px;
+  display:inline-block;
   border-radius:50%;
   background:#64748b;
 }
-.dot.on {background:var(--green)}
+.dot.on {background:#22c55e}
+#connectionText {font-size:13px;font-weight:700}
+#doorState {
+  font-size:34px;
+  font-weight:900;
+  margin:12px 0 4px;
+}
+.pin-display {
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:17px;
+  text-align:center;
+  font-size:27px;
+  letter-spacing:9px;
+  min-height:65px;
+  margin:18px 0 12px;
+}
+.keypad {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.key {
+  background:#263449;
+  border:0;
+  color:white;
+  border-radius:13px;
+  min-height:60px;
+  font-size:22px;
+  font-weight:800;
+  cursor:pointer;
+}
+.key:active {background:#475569}
+button:disabled {opacity:.4;cursor:not-allowed}
+.actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:15px;
+}
+button {
+  border:0;
+  border-radius:13px;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+.action {
+  min-height:65px;
+  font-size:15px;
+}
+.open {background:#15803d}
+.lock {background:#334155}
+.menu {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.menu button {
+  background:#172438;
+  padding:15px 5px;
+  min-height:75px;
+  font-size:12px;
+}
+.menu span {
+  display:block;
+  font-size:23px;
+  margin-bottom:5px;
+}
+input {
+  width:100%;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--bg);
+  color:white;
+  font-size:17px;
+  margin:8px 0 14px;
+  outline:none;
+}
+.primary {
+  background:#0369a1;
+  padding:16px;
+  width:100%;
+  font-size:15px;
+}
+.secondary {
+  background:#334155;
+  padding:13px;
+  width:100%;
+  font-size:14px;
+}
+.danger {
+  background:#7f1d1d;
+  padding:12px;
+  width:100%;
+}
+.hidden {display:none!important}
+.history-item {
+  border-bottom:1px solid var(--line);
+  padding:13px 0;
+  font-size:14px;
+}
+.history-item:last-child {border:0}
 #log {
+  font-size:12px;
   color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  min-height:20px;
+  line-height:1.5;
   word-break:break-word;
 }
 footer {
   text-align:center;
   color:#64748b;
   font-size:11px;
-  margin-top:25px;
+  padding:15px;
 }
 </style>
 </head>
@@ -123,97 +182,147 @@ footer {
 <main>
 
 <header>
-  <div class="logo">ARIES</div>
-  <div class="subtitle">SMART ACCESS</div>
+  <div>
+    <div class="logo">ARIES</div>
+    <div class="muted">SMART ACCESS</div>
+  </div>
+  <div class="row">
+    <span class="dot" id="connectionDot"></span>
+    <span id="connectionText">OFFLINE</span>
+  </div>
 </header>
 
-<!-- LOGIN -->
-<section id="login" class="card">
-  <h2>Selamat datang</h2>
-
-  <input
-    id="password"
-    type="password"
-    placeholder="Password"
-    autocomplete="current-password"
-  >
-
-  <button class="primary" id="passwordLogin">
-    MASUK
-  </button>
-
-  <button class="bio" id="fingerprintLogin">
-    <div style="font-size:29px">◎</div>
-    FINGERPRINT
-  </button>
-
-  <p class="muted" id="loginMessage"></p>
+<!-- STATUS -->
+<section class="card">
+  <div class="muted">STATUS PINTU</div>
+  <div id="doorState">MENUNGGU</div>
+  <div class="muted" id="doorDesc">Menunggu ESP32</div>
 </section>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="hidden">
-
-  <div class="card">
-    <div class="muted">KONEKSI MQTT</div>
-
-    <div class="connection">
-      <span class="dot" id="connectionDot"></span>
-      <span id="connectionText">OFFLINE</span>
-    </div>
+<!-- NUMPAD -->
+<section class="card">
+  <div class="row">
+    <strong>MASUKKAN PIN</strong>
+    <span class="muted" id="pinCount">0/8</span>
   </div>
 
-  <div class="card">
-    <div class="muted">STATUS PINTU</div>
+  <div class="pin-display" id="pinDisplay">••••••</div>
 
-    <div class="big" id="doorState">MENUNGGU</div>
-
-    <div class="muted" id="doorDesc">
-      Menunggu status ESP32
-    </div>
-
-    <div class="actions">
-      <button class="open" id="unlock" disabled>
-        ↗<br>BUKA
-      </button>
-
-      <button class="close" id="lock" disabled>
-        ⌑<br>KUNCI
-      </button>
-    </div>
+  <div class="keypad">
+    <button class="key" data-key="1">1</button>
+    <button class="key" data-key="2">2</button>
+    <button class="key" data-key="3">3</button>
+    <button class="key" data-key="4">4</button>
+    <button class="key" data-key="5">5</button>
+    <button class="key" data-key="6">6</button>
+    <button class="key" data-key="7">7</button>
+    <button class="key" data-key="8">8</button>
+    <button class="key" data-key="9">9</button>
+    <button class="key" data-key="back">⌫</button>
+    <button class="key" data-key="0">0</button>
+    <button class="key" data-key="clear">C</button>
   </div>
 
-  <div class="card">
-    <div class="muted">FINGERPRINT</div>
-
-    <p class="muted" id="fingerprintStatus">
-      Belum ada passkey terdaftar.
-    </p>
-
-    <button class="bio" id="registerFingerprint">
-      DAFTARKAN FINGERPRINT
+  <div class="actions">
+    <button class="action open" id="unlock" disabled>
+      BUKA PINTU
+    </button>
+    <button class="action lock" id="lock" disabled>
+      KUNCI PINTU
     </button>
   </div>
 
-  <div class="card">
-    <div class="muted">AKTIVITAS</div>
-    <p id="log">ARIES siap.</p>
-  </div>
-
-  <button class="secondary" id="logout">
-    KELUAR
-  </button>
-
+  <p class="muted" id="pinMessage"></p>
 </section>
 
-<footer>ARIES • SMART ACCESS</footer>
+<!-- MENU -->
+<section class="card">
+  <div class="menu">
+    <button onclick="showPanel('historyPanel')">
+      <span>◷</span>HISTORI
+    </button>
+    <button onclick="showPanel('pinPanel')">
+      <span>⚿</span>GANTI PIN
+    </button>
+    <button onclick="showPanel('settingsPanel')">
+      <span>⚙</span>PENGATURAN
+    </button>
+  </div>
+</section>
+
+<!-- HISTORI -->
+<section class="card hidden" id="historyPanel">
+  <div class="row">
+    <strong>HISTORI AKTIVITAS</strong>
+    <button class="secondary" style="width:auto"
+      onclick="closePanels()">TUTUP</button>
+  </div>
+
+  <div id="historyList" style="margin-top:15px"></div>
+
+  <button class="danger" onclick="clearHistory()">
+    HAPUS HISTORI
+  </button>
+</section>
+
+<!-- GANTI PIN -->
+<section class="card hidden" id="pinPanel">
+  <div class="row">
+    <strong>GANTI PIN</strong>
+    <button class="secondary" style="width:auto"
+      onclick="closePanels()">TUTUP</button>
+  </div>
+
+  <label class="muted">PIN LAMA</label>
+  <input id="oldPin" type="password"
+    inputmode="numeric" maxlength="8" placeholder="PIN lama">
+
+  <label class="muted">PIN BARU</label>
+  <input id="newPin" type="password"
+    inputmode="numeric" maxlength="8" placeholder="4-8 angka">
+
+  <label class="muted">ULANGI PIN BARU</label>
+  <input id="confirmPin" type="password"
+    inputmode="numeric" maxlength="8" placeholder="Ulangi PIN">
+
+  <button class="primary" onclick="changePin()">
+    SIMPAN PIN
+  </button>
+  <p class="muted" id="changeMessage"></p>
+</section>
+
+<!-- PENGATURAN -->
+<section class="card hidden" id="settingsPanel">
+  <div class="row">
+    <strong>PENGATURAN</strong>
+    <button class="secondary" style="width:auto"
+      onclick="closePanels()">TUTUP</button>
+  </div>
+
+  <p class="muted">Aplikasi ARIES</p>
+  <p class="muted">Versi 1.0</p>
+
+  <button class="secondary" onclick="resetPin()">
+    RESET PIN DEMO
+  </button>
+</section>
+
+<!-- AKTIVITAS TERBARU -->
+<section class="card">
+  <div class="muted">AKTIVITAS TERBARU</div>
+  <p id="log">Memulai koneksi...</p>
+</section>
+
+<footer>ARIES • SMART DOOR LOCK</footer>
+
 </main>
 
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
 <script>
-// ======================================
-// KONFIGURASI WOKWI - JANGAN DIUBAH
-// ======================================
+// =====================================
+// MQTT - KONFIGURASI ASLI WOKWI
+// =====================================
 
 const DEVICE_ID = "ariesharianto-smartlock-demo-7f3a91";
 const DEMO_TOKEN = "ARIES-DEMO-LOCK-7F3A91";
@@ -222,243 +331,191 @@ const TOPIC_COMMAND = DEVICE_ID + "/command";
 const TOPIC_STATUS = DEVICE_ID + "/status";
 const BROKER_URL = "wss://broker.emqx.io:8084/mqtt";
 
-// ======================================
-// PENGATURAN LOGIN DEMO
-// ======================================
+// =====================================
+// DATA LOKAL
+// =====================================
 
-// GANTI PASSWORD DI SINI
-const APP_PASSWORD = "123456";
+const DEFAULT_PIN = "123456";
+const PIN_KEY = "aries_pin";
+const HISTORY_KEY = "aries_history";
 
-const PASSKEY_KEY = "aries_passkey_id";
-let authenticated = false;
+let enteredPin = "";
 let client = null;
 
 const $ = id => document.getElementById(id);
 
-// ======================================
-// UTILITAS WEB AUTHN
-// ======================================
-
-function base64url(buffer) {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-
-  bytes.forEach(byte => binary += String.fromCharCode(byte));
-
-  return btoa(binary)
-    .replace(/\+/g,"-")
-    .replace(/\//g,"_")
-    .replace(/=/g,"");
+function getPin() {
+  return localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
 }
 
-function fromBase64url(value) {
-  const base64 = value
-    .replace(/-/g,"+")
-    .replace(/_/g,"/");
-
-  const binary = atob(
-    base64 + "=".repeat((4-base64.length%4)%4)
+function saveHistory(message) {
+  let history = JSON.parse(
+    localStorage.getItem(HISTORY_KEY) || "[]"
   );
 
-  return Uint8Array.from(binary,c => c.charCodeAt(0));
-}
+  history.unshift({
+    message,
+    time: new Date().toLocaleString("id-ID")
+  });
 
-function randomBytes(length=32) {
-  return crypto.getRandomValues(new Uint8Array(length));
-}
+  history = history.slice(0,50);
 
-function checkWebAuthn() {
-  return !!(
-    window.PublicKeyCredential &&
-    navigator.credentials &&
-    window.isSecureContext
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(history)
   );
+
+  renderHistory();
 }
 
-// ======================================
-// LOGIN PASSWORD
-// ======================================
+function renderHistory() {
+  const history = JSON.parse(
+    localStorage.getItem(HISTORY_KEY) || "[]"
+  );
 
-function loginPassword() {
-  if($("password").value === APP_PASSWORD) {
-    enterDashboard();
-  } else {
-    $("loginMessage").textContent = "Password salah.";
+  $("historyList").innerHTML = "";
+
+  if(!history.length) {
+    $("historyList").textContent = "Belum ada aktivitas.";
+    return;
   }
+
+  history.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+
+    const title = document.createElement("div");
+    title.textContent = item.message;
+
+    const time = document.createElement("div");
+    time.className = "muted";
+    time.textContent = item.time;
+
+    div.append(title,time);
+    $("historyList").appendChild(div);
+  });
 }
 
-$("passwordLogin").addEventListener("click",loginPassword);
+function clearHistory() {
+  if(!confirm("Hapus semua histori?")) return;
 
-$("password").addEventListener("keydown",event => {
-  if(event.key === "Enter") loginPassword();
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+}
+
+renderHistory();
+
+// =====================================
+// NUMPAD
+// =====================================
+
+function updatePinDisplay() {
+  $("pinDisplay").textContent =
+    enteredPin.length
+      ? "●".repeat(enteredPin.length)
+      : "••••••";
+
+  $("pinCount").textContent =
+    enteredPin.length + "/8";
+}
+
+document.querySelectorAll("[data-key]").forEach(button => {
+
+  button.addEventListener("click",() => {
+
+    const key = button.dataset.key;
+
+    if(key === "clear") {
+      enteredPin = "";
+    }
+    else if(key === "back") {
+      enteredPin = enteredPin.slice(0,-1);
+    }
+    else if(enteredPin.length < 8) {
+      enteredPin += key;
+    }
+
+    updatePinDisplay();
+    $("pinMessage").textContent = "";
+  });
 });
 
-// ======================================
-// REGISTRASI PASSKEY
-// ======================================
+function clearPin() {
+  enteredPin = "";
+  updatePinDisplay();
+}
 
-async function registerFingerprint() {
+// =====================================
+// GANTI PIN
+// =====================================
 
-  if(!authenticated) return;
+function changePin() {
 
-  if(!checkWebAuthn()) {
-    alert("Browser tidak mendukung WebAuthn atau bukan koneksi HTTPS.");
+  const oldPin = $("oldPin").value;
+  const newPin = $("newPin").value;
+  const confirmPin = $("confirmPin").value;
+
+  if(oldPin !== getPin()) {
+    $("changeMessage").textContent = "PIN lama salah.";
     return;
   }
 
-  try {
-
-    const credential = await navigator.credentials.create({
-      publicKey: {
-        challenge: randomBytes(32),
-
-        rp: {
-          name: "ARIES",
-          id: location.hostname
-        },
-
-        user: {
-          id: randomBytes(16),
-          name: "aries-user",
-          displayName: "ARIES User"
-        },
-
-        pubKeyCredParams: [
-          {type:"public-key",alg:-7},
-          {type:"public-key",alg:-257}
-        ],
-
-        authenticatorSelection: {
-          authenticatorAttachment:"platform",
-          residentKey:"preferred",
-          userVerification:"required"
-        },
-
-        timeout:60000,
-        attestation:"none"
-      }
-    });
-
-    if(!credential) throw new Error("Registrasi dibatalkan.");
-
-    localStorage.setItem(
-      PASSKEY_KEY,
-      base64url(credential.rawId)
-    );
-
-    $("fingerprintStatus").textContent =
-      "Passkey berhasil dibuat pada perangkat ini.";
-
-    $("log").textContent =
-      "Registrasi passkey selesai (demo lokal).";
-
-    alert("Passkey berhasil didaftarkan!");
-
-  } catch(error) {
-    $("log").textContent = "Registrasi gagal: " + error.message;
-  }
-}
-
-$("registerFingerprint").addEventListener(
-  "click",registerFingerprint
-);
-
-// ======================================
-// LOGIN FINGERPRINT
-// ======================================
-
-async function loginFingerprint() {
-
-  if(!checkWebAuthn()) {
-    alert("WebAuthn tidak didukung. Gunakan HTTPS dan browser terbaru.");
+  if(!/^\d{4,8}$/.test(newPin)) {
+    $("changeMessage").textContent =
+      "PIN baru harus 4 sampai 8 angka.";
     return;
   }
 
-  const savedId = localStorage.getItem(PASSKEY_KEY);
-
-  if(!savedId) {
-    $("loginMessage").textContent =
-      "Belum ada passkey. Login dengan password dan daftarkan fingerprint dahulu.";
+  if(newPin !== confirmPin) {
+    $("changeMessage").textContent =
+      "Konfirmasi PIN tidak cocok.";
     return;
   }
 
-  try {
+  localStorage.setItem(PIN_KEY,newPin);
 
-    const credential = await navigator.credentials.get({
-      publicKey: {
-        challenge:randomBytes(32),
+  $("changeMessage").textContent =
+    "PIN berhasil diganti.";
 
-        rpId:location.hostname,
+  $("oldPin").value = "";
+  $("newPin").value = "";
+  $("confirmPin").value = "";
 
-        allowCredentials: [{
-          type:"public-key",
-          id:fromBase64url(savedId)
-        }],
-
-        userVerification:"required",
-        timeout:60000
-      }
-    });
-
-    if(!credential) throw new Error("Autentikasi dibatalkan.");
-
-    // DEMO SAJA:
-    // Tidak ada server untuk memverifikasi signature WebAuthn.
-    enterDashboard();
-
-  } catch(error) {
-    $("loginMessage").textContent =
-      "Fingerprint gagal: " + error.message;
-  }
+  saveHistory("PIN berhasil diganti");
 }
 
-$("fingerprintLogin").addEventListener(
-  "click",loginFingerprint
-);
+function resetPin() {
+  if(!confirm("Kembalikan PIN ke 123456?")) return;
 
-// ======================================
-// DASHBOARD
-// ======================================
-
-function enterDashboard() {
-
-  authenticated = true;
-
-  $("login").classList.add("hidden");
-  $("dashboard").classList.remove("hidden");
-
-  $("fingerprintStatus").textContent =
-    localStorage.getItem(PASSKEY_KEY)
-      ? "Passkey terdaftar pada browser ini."
-      : "Belum ada passkey terdaftar.";
-
-  startMQTT();
+  localStorage.removeItem(PIN_KEY);
+  saveHistory("PIN demo direset");
+  alert("PIN demo kembali menjadi 123456.");
 }
 
-function logout() {
+// =====================================
+// MENU
+// =====================================
 
-  authenticated = false;
+function showPanel(id) {
+  closePanels();
+  $(id).classList.remove("hidden");
 
-  if(client) {
-    client.end(true);
-    client = null;
-  }
+  if(id === "historyPanel") renderHistory();
 
-  $("dashboard").classList.add("hidden");
-  $("login").classList.remove("hidden");
-  $("password").value = "";
-
-  setConnection(false,"OFFLINE");
+  $(id).scrollIntoView({
+    behavior:"smooth",
+    block:"nearest"
+  });
 }
 
-$("logout").addEventListener("click",logout);
+function closePanels() {
+  ["historyPanel","pinPanel","settingsPanel"]
+    .forEach(id => $(id).classList.add("hidden"));
+}
 
-// ======================================
-// MQTT - PROTOKOL ASLI
-// ======================================
-
-const unlockButton = $("unlock");
-const lockButton = $("lock");
+// =====================================
+// KONEKSI MQTT
+// =====================================
 
 function setConnection(connected,text) {
 
@@ -467,43 +524,42 @@ function setConnection(connected,text) {
 
   $("connectionText").textContent = text;
 
-  unlockButton.disabled = !connected;
-  lockButton.disabled = !connected;
+  $("unlock").disabled = !connected;
+  $("lock").disabled = !connected;
 }
 
 function showStatus(message) {
 
-  const parts = message.split("|");
-  const state = parts[0];
+  const state = message.split("|")[0];
 
   if(state === "UNLOCKED") {
-
     $("doorState").textContent = "TERBUKA";
     $("doorState").style.color = "#22c55e";
-
     $("doorDesc").textContent =
       "ESP32 mengonfirmasi pintu terbuka.";
 
-  } else if(state === "LOCKED") {
+    saveHistory("Pintu terbuka (konfirmasi ESP32)");
+  }
 
+  else if(state === "LOCKED") {
     $("doorState").textContent = "TERKUNCI";
     $("doorState").style.color = "#cbd5e1";
-
     $("doorDesc").textContent =
       "ESP32 mengonfirmasi pintu terkunci.";
 
-  } else {
-    return;
+    saveHistory("Pintu terkunci (konfirmasi ESP32)");
   }
 
+  else return;
+
   $("log").textContent =
-    "Terakhir diperbarui: " +
+    "Status diterima: " +
     new Date().toLocaleTimeString();
 }
 
 function sendCommand(command) {
 
-  if(!authenticated || !client || !client.connected) return;
+  if(!client || !client.connected) return;
 
   client.publish(
     TOPIC_COMMAND,
@@ -512,16 +568,41 @@ function sendCommand(command) {
   );
 
   $("log").textContent =
-    "Perintah " + command + " dikirim. Menunggu konfirmasi...";
+    "Perintah " + command + " dikirim. Menunggu ESP32...";
+
+  saveHistory(
+    command === "UNLOCK"
+      ? "Perintah buka dikirim"
+      : "Perintah kunci dikirim"
+  );
 }
 
-unlockButton.addEventListener(
-  "click",() => sendCommand("UNLOCK")
-);
+// =====================================
+// BUKA DAN KUNCI PINTU
+// =====================================
 
-lockButton.addEventListener(
-  "click",() => sendCommand("LOCK")
-);
+$("unlock").addEventListener("click",() => {
+
+  if(enteredPin !== getPin()) {
+    $("pinMessage").textContent = "PIN SALAH!";
+    saveHistory("Percobaan PIN salah");
+    clearPin();
+    return;
+  }
+
+  sendCommand("UNLOCK");
+  $("pinMessage").textContent = "PIN benar. Perintah dikirim.";
+  clearPin();
+});
+
+$("lock").addEventListener("click",() => {
+  sendCommand("LOCK");
+  clearPin();
+});
+
+// =====================================
+// START MQTT
+// =====================================
 
 function startMQTT() {
 
@@ -545,10 +626,9 @@ function startMQTT() {
     setConnection(true,"ONLINE");
 
     client.subscribe(TOPIC_STATUS,{qos:0},err => {
-
       $("log").textContent = err
-        ? "Gagal subscribe status: " + err.message
-        : "Terhubung. Menunggu status ESP32...";
+        ? "Gagal subscribe: " + err.message
+        : "Terhubung ke broker EMQX.";
     });
   });
 
@@ -561,21 +641,20 @@ function startMQTT() {
   );
 
   client.on("error",err => {
-
     setConnection(false,"ERROR");
-
-    $("log").textContent =
-      "MQTT error: " + err.message;
+    $("log").textContent = "MQTT: " + err.message;
   });
 
   client.on("message",(topic,payload) => {
-
     if(topic === TOPIC_STATUS) {
       showStatus(payload.toString());
     }
   });
 }
+
+startMQTT();
 </script>
 
 </body>
 </html>
+```
