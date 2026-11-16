@@ -7,177 +7,112 @@
 <meta name="description" content="ARIES Smart Door Lock IoT dashboard">
 <title>ARIES • Smart Access</title>
 <style>
-:root{
-  color-scheme:dark;--bg:#080d17;--panel:#111c2d;--panel2:#0c1524;--line:#26364b;
-  --muted:#93a4bb;--text:#f8fafc;--green:#22c55e;--red:#fb7185;--blue:#38bdf8;
-  --amber:#fbbf24;--shadow:0 14px 34px #0003
-}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;padding:22px;background:radial-gradient(circle at 15% 0,#1b2d48 0,#080d17 48%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-main{width:100%;max-width:920px;margin:0 auto}
-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:8px 0 22px}
-.brand{display:flex;align-items:center;gap:13px}.brand-mark{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#164e63,#0f766e);font-weight:1000;font-size:23px;box-shadow:0 8px 22px #0e749044}
-.logo{font-size:30px;line-height:1;font-weight:950;letter-spacing:5px}.subtitle{font-size:10px;color:var(--muted);letter-spacing:3px;margin-top:6px}
-.connection{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:#0d1727;font-size:11px;font-weight:850;white-space:nowrap}
-.dot{width:9px;height:9px;border-radius:50%;background:#64748b}.dot.on{background:var(--green);box-shadow:0 0 12px #22c55e88}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.span2{grid-column:1/-1}
-.card{min-width:0;background:linear-gradient(155deg,#142137,#101a2a);border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:var(--shadow)}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.card-title{font-size:13px;font-weight:900;letter-spacing:1px}.eyebrow{color:var(--muted);font-size:10px;letter-spacing:1.6px;font-weight:800}
-.muted{color:var(--muted);font-size:12px;line-height:1.55}.tiny{font-size:10px;color:var(--muted);line-height:1.5}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.stack{display:grid;gap:9px}
-.hero{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero-state{font-size:clamp(28px,5vw,42px);font-weight:950;letter-spacing:-1px;margin:7px 0 4px}.hero-desc{font-size:12px;color:var(--muted)}
+:root{color-scheme:dark;--bg:#080d17;--panel:#111c2d;--panel2:#0c1524;--line:#26364b;--muted:#93a4bb;--text:#f8fafc;--green:#22c55e;--red:#fb7185;--blue:#38bdf8;--amber:#fbbf24;--shadow:0 14px 34px #0003}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#1b2d48 0,#080d17 48%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{width:min(1280px,100%);margin:0 auto;padding:22px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:start}
+.sidebar{position:sticky;top:20px;background:rgba(13,23,39,.92);border:1px solid var(--line);border-radius:22px;padding:16px;min-height:calc(100vh - 40px);display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 4px 16px;border-bottom:1px solid var(--line)}.brand-mark{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#164e63,#0f766e);font-weight:1000;font-size:23px}.logo{font-size:27px;line-height:1;font-weight:950;letter-spacing:4px}.subtitle{font-size:9px;color:var(--muted);letter-spacing:2px;margin-top:6px}
+.nav-label{font-size:9px;letter-spacing:1.7px;color:#64748b;font-weight:900;padding:0 9px;margin:3px 0}.nav{display:grid;gap:6px}.nav button{width:100%;text-align:left;padding:11px 12px;background:transparent;color:#aebbd0;font-size:12px;border:1px solid transparent;border-radius:12px;display:flex;align-items:center;gap:11px}.nav button .ico{width:22px;text-align:center;font-size:16px}.nav button.active{background:#12324a;border-color:#155e75;color:#e0f2fe}.nav button:hover:not(:disabled){background:#17283d}
+.sidebar-bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}.connection{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:999px;background:#0d1727;font-size:10px;font-weight:850;white-space:nowrap;width:max-content;max-width:100%}.dot{width:9px;height:9px;border-radius:50%;background:#64748b;flex:none}.dot.on{background:var(--green);box-shadow:0 0 12px #22c55e88}
+.content{min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:3px 0 19px}.page-heading{font-size:23px;font-weight:900;letter-spacing:-.5px}.page-subtitle{font-size:11px;color:var(--muted);margin-top:4px}.mobile-brand{display:none}
+.card{min-width:0;background:linear-gradient(155deg,#142137,#101a2a);border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:var(--shadow)}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.card-title{font-size:13px;font-weight:900;letter-spacing:.7px}.eyebrow{color:var(--muted);font-size:10px;letter-spacing:1.5px;font-weight:800}.muted{color:var(--muted);font-size:12px;line-height:1.6}.tiny{font-size:10px;color:var(--muted);line-height:1.5}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.stack{display:grid;gap:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.span2{grid-column:1/-1}
+.page{display:none;animation:fadeIn .18s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:.5;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero-state{font-size:clamp(30px,4vw,43px);font-weight:950;letter-spacing:-1px;margin:8px 0 4px}.hero-desc{font-size:12px;color:var(--muted)}
 .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#0b1523;border-radius:999px;padding:7px 10px;font-size:10px;color:#cbd5e1;font-weight:850;white-space:nowrap}.pill.good{border-color:#166534;color:#86efac}.pill.bad{border-color:#7f1d1d;color:#fda4af}.pill.warn{border-color:#854d0e;color:#fde68a}
-.alarm{display:flex;align-items:center;gap:10px;background:#571b25;border:1px solid #fb7185;border-radius:15px;padding:14px 16px;margin:0 0 14px;color:#fff;font-weight:900;font-size:13px;animation:pulse 1s infinite alternate}.alarm.hidden{display:none}@keyframes pulse{from{opacity:1}to{opacity:.68}}
-.pin-display{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:15px;text-align:center;font-size:25px;letter-spacing:9px;min-height:61px;margin:11px 0 12px;color:#e2e8f0}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{background:#26364b;border:1px solid #344860;color:white;border-radius:12px;min-height:49px;font-size:20px;font-weight:850;cursor:pointer;transition:.12s}.key:hover{background:#344860}.key:active{transform:scale(.98)}
-button{border:0;border-radius:12px;color:white;font-weight:850;cursor:pointer;transition:filter .15s,transform .12s}button:hover:not(:disabled){filter:brightness(1.12)}button:active:not(:disabled){transform:scale(.985)}button:disabled{opacity:.35;cursor:not-allowed}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.action{min-height:54px;font-size:13px}.open{background:#15803d}.lock{background:#334155}.primary{background:#0369a1;padding:14px;width:100%;font-size:13px}.secondary{background:#334155;padding:10px 12px;font-size:11px}.danger{background:#991b1b;padding:13px;width:100%;font-size:12px}.warning{background:#92400e;padding:13px;width:100%;font-size:12px}.quiet{background:#1e293b;padding:11px 12px;font-size:11px}
-label{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;font-weight:850;margin:5px 0}
-input,select{width:100%;padding:12px 13px;margin:5px 0 10px;border:1px solid var(--line);border-radius:11px;background:#091321;color:white;font-size:14px;outline:none;min-width:0}input:focus,select:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px #0ea5e922}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.form-grid .full{grid-column:1/-1}.message{min-height:17px;margin-top:8px;font-size:11px;color:#bae6fd;line-height:1.5}
-.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.menu button{background:#17263a;padding:13px 5px;min-height:72px;font-size:10px}.menu span{display:block;font-size:20px;margin-bottom:5px}
-.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.metric{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0b1523;min-width:0}.metric-label{font-size:9px;letter-spacing:1px;color:var(--muted);font-weight:850}.metric-value{font-size:17px;font-weight:900;margin-top:7px;overflow-wrap:anywhere}.metric-sub{font-size:9px;color:var(--muted);margin-top:3px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stat{padding:14px;border-radius:14px;background:#0b1523;border:1px solid var(--line)}.stat-num{font-size:25px;font-weight:950}.stat-label{font-size:10px;color:var(--muted);margin-top:4px}
-.history{max-height:330px;overflow:auto}.history-item{display:grid;grid-template-columns:8px 1fr auto;align-items:start;gap:10px;border-bottom:1px solid #253449;padding:11px 0;font-size:12px}.history-item:last-child{border:0}.event-dot{width:7px;height:7px;border-radius:50%;background:#38bdf8;margin-top:5px}.event-main{font-weight:750;line-height:1.4}.event-meta{font-size:10px;color:var(--muted);margin-top:3px}.event-time{font-size:9px;color:var(--muted);white-space:nowrap}
-.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions button{flex:1;min-width:110px}
-.hidden{display:none!important}footer{text-align:center;color:#64748b;font-size:10px;padding:19px 0 8px}
-@media(max-width:650px){body{padding:13px}.grid{grid-template-columns:1fr}.span2{grid-column:auto}.card{padding:16px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.menu{grid-template-columns:repeat(2,1fr)}.logo{font-size:26px}.brand-mark{width:43px;height:43px}.hero{align-items:flex-start;flex-direction:column}.connection{font-size:10px;padding:8px 9px}}
-@media(max-width:360px){.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.key{min-height:45px}.logo{letter-spacing:3px}}
+.alarm{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#571b25;border:1px solid #fb7185;border-radius:15px;padding:13px 16px;margin:0 0 14px;color:#fff;font-weight:900;font-size:12px;animation:pulse 1s infinite alternate}.alarm.hidden{display:none}@keyframes pulse{from{opacity:1}to{opacity:.68}}.lockout-banner{background:#4b2e11;border-color:#f59e0b}.lockout-main{display:flex;align-items:center;gap:11px}.lockout-copy{display:grid;gap:3px}.lockout-copy span{font-size:10px;font-weight:600;color:#fde68a}.countdown{min-width:55px;text-align:center;font-variant-numeric:tabular-nums;font-size:28px;font-weight:950;color:#fff;border:1px solid #f59e0b;border-radius:12px;padding:7px 8px;background:#2c1b0a}
+.quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:14px}.quick{background:#0b1523;border:1px solid var(--line);border-radius:15px;padding:15px;min-width:0}.quick-label{font-size:9px;color:var(--muted);font-weight:850;letter-spacing:1px}.quick-value{font-size:19px;font-weight:950;margin-top:7px}.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.feature-tile{background:linear-gradient(145deg,#172b43,#0d192a);border:1px solid var(--line);color:var(--text);padding:17px;border-radius:16px;text-align:left;min-height:112px}.feature-tile .tile-icon{font-size:22px;display:block;margin-bottom:11px}.feature-tile strong{display:block;font-size:12px}.feature-tile small{display:block;color:var(--muted);font-size:10px;line-height:1.45;margin-top:5px}
+.pin-display{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:15px;text-align:center;font-size:25px;letter-spacing:9px;min-height:61px;margin:11px 0 12px;color:#e2e8f0}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{background:#26364b;border:1px solid #344860;color:white;border-radius:12px;min-height:49px;font-size:20px;font-weight:850;cursor:pointer;transition:.12s}.key:hover{background:#344860}.key:active{transform:scale(.98)}
+button{border:0;border-radius:12px;color:white;font-weight:850;cursor:pointer;transition:filter .15s,transform .12s}button:hover:not(:disabled){filter:brightness(1.12)}button:active:not(:disabled){transform:scale(.985)}button:disabled{opacity:.35;cursor:not-allowed}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.action{min-height:54px;font-size:13px}.open{background:#15803d}.lock{background:#334155}.primary{background:#0369a1;padding:14px;width:100%;font-size:12px}.secondary{background:#334155;padding:10px 12px;font-size:11px}.danger{background:#991b1b;padding:13px;width:100%;font-size:12px}.warning{background:#92400e;padding:13px;width:100%;font-size:12px}.quiet{background:#1e293b;padding:11px 12px;font-size:11px}
+label{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;font-weight:850;margin:5px 0}input,select{width:100%;padding:12px 13px;margin:5px 0 10px;border:1px solid var(--line);border-radius:11px;background:#091321;color:white;font-size:14px;outline:none;min-width:0}input:focus,select:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px #0ea5e922}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.form-grid .full{grid-column:1/-1}.message{min-height:17px;margin-top:8px;font-size:11px;color:#bae6fd;line-height:1.5}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.metric{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0b1523;min-width:0}.metric-label{font-size:9px;letter-spacing:1px;color:var(--muted);font-weight:850}.metric-value{font-size:17px;font-weight:900;margin-top:7px;overflow-wrap:anywhere}.metric-sub{font-size:9px;color:var(--muted);margin-top:3px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stat{padding:14px;border-radius:14px;background:#0b1523;border:1px solid var(--line)}.stat-num{font-size:25px;font-weight:950}.stat-label{font-size:10px;color:var(--muted);margin-top:4px}
+.history{max-height:520px;overflow:auto}.history-item{display:grid;grid-template-columns:8px 1fr auto;align-items:start;gap:10px;border-bottom:1px solid #253449;padding:11px 0;font-size:12px}.history-item:last-child{border:0}.event-dot{width:7px;height:7px;border-radius:50%;background:#38bdf8;margin-top:5px}.event-main{font-weight:750;line-height:1.4}.event-meta{font-size:10px;color:var(--muted);margin-top:3px}.event-time{font-size:9px;color:var(--muted);white-space:nowrap}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions button{flex:1;min-width:110px}.hidden{display:none!important}footer{text-align:center;color:#64748b;font-size:10px;padding:20px 0 8px}
+@media(max-width:900px){.app{grid-template-columns:190px minmax(0,1fr);gap:15px;padding:15px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.app{display:block;padding:12px}.sidebar{position:static;min-height:0;margin-bottom:15px;padding:12px;gap:10px}.brand{padding:3px 4px 10px}.nav{display:flex;overflow-x:auto;padding-bottom:3px;gap:6px}.nav-label,.sidebar-bottom{display:none}.nav button{width:auto;min-width:max-content;padding:9px 11px}.nav button .ico{width:auto}.topbar{margin:8px 0 14px}.page-heading{font-size:20px}.grid{grid-template-columns:1fr}.span2{grid-column:auto}.card{padding:16px}.hero{align-items:flex-start;flex-direction:column}.metrics,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.alarm{align-items:flex-start}}
+@media(max-width:370px){.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.key{min-height:45px}.feature-grid{grid-template-columns:1fr}.event-time{display:none}.logo{letter-spacing:3px}}
 </style>
 </head>
 <body>
-<main>
-<header>
-  <div class="brand">
-    <div class="brand-mark">A</div>
-    <div><div class="logo">ARIES</div><div class="subtitle">SMART ACCESS CONTROL</div></div>
-  </div>
-  <div class="connection"><span class="dot" id="connectionDot"></span><span id="connectionText">OFFLINE</span></div>
-</header>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">A</div><div><div class="logo">ARIES</div><div class="subtitle">SMART ACCESS CONTROL</div></div></div>
+    <div><div class="nav-label">MENU UTAMA</div><nav class="nav" aria-label="Navigasi ARIES">
+      <button class="active" data-page="home"><span class="ico">⌂</span>Dashboard</button>
+      <button data-page="access"><span class="ico">▦</span>Akses PIN</button>
+      <button data-page="monitoring"><span class="ico">◉</span>Monitoring</button>
+      <button data-page="guest"><span class="ico">♙</span>PIN Tamu</button>
+      <button data-page="emergency"><span class="ico">⚠</span>Emergency Lock</button>
+      <button data-page="fingerprint"><span class="ico">◎</span>Fingerprint</button>
+      <button data-page="statistics"><span class="ico">▤</span>Statistik</button>
+      <button data-page="activity"><span class="ico">◷</span>Live Activity</button>
+      <button data-page="settings"><span class="ico">⚙</span>Pengaturan</button>
+    </nav></div>
+    <div class="sidebar-bottom"><div class="connection"><span class="dot" id="connectionDot"></span><span id="connectionText">OFFLINE</span></div><p class="tiny" style="margin:10px 3px 0">MQTT • EMQX</p></div>
+  </aside>
 
-<div id="alarmBanner" class="alarm hidden">⚠️ ALARM KEAMANAN — PINTU TERDETEKSI DIPAKSA BUKA</div>
-<div id="emergencyBanner" class="alarm hidden">🚨 EMERGENCY LOCK AKTIF — SEMUA AKSES BUKA DINONAKTIFKAN</div>
+  <main class="content">
+    <div class="topbar"><div><div class="page-heading" id="pageTitle">Dashboard</div><div class="page-subtitle" id="pageSubtitle">Ringkasan kondisi ARIES dan akses cepat.</div></div><div class="connection" style="display:none" id="mobileConnection"><span class="dot" id="mobileConnectionDot"></span><span id="mobileConnectionText">OFFLINE</span></div></div>
+    <div id="alarmBanner" class="alarm hidden">⚠️ ALARM KEAMANAN — PINTU TERDETEKSI DIPAKSA BUKA</div>
+    <div id="emergencyBanner" class="alarm hidden">🚨 EMERGENCY LOCK AKTIF — SEMUA AKSES BUKA DINONAKTIFKAN</div>
+    <div id="lockoutBanner" class="alarm lockout-banner hidden"><div class="lockout-main"><span style="font-size:22px">⏳</span><div class="lockout-copy"><strong>AKSES DIKUNCI SEMENTARA</strong><span id="lockoutText">Akses diblokir setelah 3 PIN salah.</span></div></div><div class="countdown" id="lockoutCountdown">30</div></div>
 
-<div class="grid">
-  <section class="card span2">
-    <div class="hero">
-      <div>
-        <div class="eyebrow">STATUS KUNCI PINTU</div>
-        <div id="doorState" class="hero-state">MENUNGGU</div>
-        <div id="doorDesc" class="hero-desc">Menunggu status dari ESP32 melalui MQTT.</div>
+    <section class="page active" id="page-home">
+      <div class="card span2"><div class="hero"><div><div class="eyebrow">STATUS KUNCI PINTU</div><div id="doorState" class="hero-state">MENUNGGU</div><div id="doorDesc" class="hero-desc">Menunggu status dari ESP32 melalui MQTT.</div></div><div class="stack"><span class="pill" id="doorPill">● STATUS BELUM ADA</span><span class="pill" id="emergencyPill">EMERGENCY: OFF</span></div></div></div>
+      <div class="quick-grid">
+        <div class="quick"><div class="quick-label">AKSES TERBUKA</div><div class="quick-value" id="homeUnlockSummary">0</div></div>
+        <div class="quick"><div class="quick-label">PINTU TERKUNCI</div><div class="quick-value" id="homeLockSummary">0</div></div>
+        <div class="quick"><div class="quick-label">LOCKOUT</div><div class="quick-value" id="lockoutValueHome">OFF</div></div>
+        <div class="quick"><div class="quick-label">EMERGENCY</div><div class="quick-value" id="emergencyValueHome">OFF</div></div>
       </div>
-      <div class="stack" style="justify-items:end">
-        <span class="pill" id="doorPill">● STATUS BELUM ADA</span>
-        <span class="pill" id="emergencyPill">EMERGENCY: OFF</span>
-      </div>
-    </div>
-  </section>
+      <div class="card" style="margin-top:14px"><div class="card-head"><div class="card-title">FITUR ARIES</div><span class="eyebrow">PILIH HALAMAN</span></div><div class="feature-grid">
+        <button class="feature-tile" data-goto="access"><span class="tile-icon">🔐</span><strong>Akses PIN</strong><small>Masukkan PIN dan kendalikan kunci pintu</small></button>
+        <button class="feature-tile" data-goto="monitoring"><span class="tile-icon">📡</span><strong>Device Monitoring</strong><small>Pantau Wi-Fi, MQTT, sensor, dan ESP32</small></button>
+        <button class="feature-tile" data-goto="guest"><span class="tile-icon">👤</span><strong>PIN Tamu</strong><small>Atur PIN sementara dan batas penggunaan</small></button>
+        <button class="feature-tile" data-goto="emergency"><span class="tile-icon">🆘</span><strong>Emergency Lock</strong><small>Aktifkan penguncian darurat</small></button>
+        <button class="feature-tile" data-goto="fingerprint"><span class="tile-icon">👆</span><strong>Fingerprint</strong><small>Daftarkan sidik jari pada modul fisik</small></button>
+        <button class="feature-tile" data-goto="statistics"><span class="tile-icon">📈</span><strong>Statistik</strong><small>Lihat ringkasan penggunaan perangkat</small></button>
+        <button class="feature-tile" data-goto="activity"><span class="tile-icon">⚡</span><strong>Live Activity</strong><small>Lihat log aktivitas yang masuk dari MQTT</small></button>
+        <button class="feature-tile" data-goto="settings"><span class="tile-icon">⚙️</span><strong>Pengaturan</strong><small>Ganti PIN master dan uji sensor</small></button>
+      </div></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">🔐 AKSES PIN</div><span class="eyebrow" id="pinCount">0/8</span></div>
-    <div class="muted">Masukkan PIN master atau PIN tamu yang aktif.</div>
-    <div class="pin-display" id="pinDisplay">••••••</div>
-    <div class="keypad">
-      <button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button>
-      <button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button>
-      <button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button>
-      <button class="key" data-key="back">⌫</button><button class="key" data-key="0">0</button><button class="key" data-key="clear">C</button>
-    </div>
-    <div class="actions"><button class="action open" id="unlock" disabled>BUKA PINTU</button><button class="action lock" id="lock" disabled>KUNCI PINTU</button></div>
-    <div class="message" id="pinMessage">PIN diverifikasi oleh ESP32, bukan oleh browser.</div>
-  </section>
+    <section class="page" id="page-access">
+      <div class="card" style="max-width:520px"><div class="card-head"><div class="card-title">🔐 AKSES PIN</div><span class="eyebrow" id="pinCount">0/8</span></div><div class="muted">Masukkan PIN master atau PIN tamu yang masih aktif. Verifikasi dilakukan oleh ESP32.</div><div class="pin-display" id="pinDisplay">••••••</div><div class="keypad">
+        <button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button><button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button><button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button><button class="key" data-key="back">⌫</button><button class="key" data-key="0">0</button><button class="key" data-key="clear">C</button>
+      </div><div class="actions"><button class="action open" id="unlock" disabled>BUKA PINTU</button><button class="action lock" id="lock" disabled>KUNCI PINTU</button></div><div class="message" id="pinMessage">PIN diverifikasi oleh ESP32, bukan oleh browser.</div></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">📡 DEVICE MONITORING</div><span class="eyebrow">REAL-TIME</span></div>
-    <div class="metrics">
-      <div class="metric"><div class="metric-label">WI-FI</div><div class="metric-value" id="wifiValue">—</div><div class="metric-sub" id="rssiValue">RSSI —</div></div>
-      <div class="metric"><div class="metric-label">MQTT</div><div class="metric-value" id="mqttValue">—</div><div class="metric-sub">EMQX broker</div></div>
-      <div class="metric"><div class="metric-label">SENSOR PINTU</div><div class="metric-value" id="sensorValue">—</div><div class="metric-sub">GPIO 34</div></div>
-      <div class="metric"><div class="metric-label">FINGERPRINT</div><div class="metric-value" id="fingerValue">—</div><div class="metric-sub" id="fingerSub">UART sensor</div></div>
-      <div class="metric"><div class="metric-label">ALARM</div><div class="metric-value" id="alarmValue">—</div><div class="metric-sub">Intruder detection</div></div>
-      <div class="metric"><div class="metric-label">EMERGENCY</div><div class="metric-value" id="emergencyValue">—</div><div class="metric-sub">Access override</div></div>
-      <div class="metric"><div class="metric-label">UPTIME</div><div class="metric-value" id="uptimeValue">—</div><div class="metric-sub">Since ESP32 boot</div></div>
-      <div class="metric"><div class="metric-label">LOCKOUT</div><div class="metric-value" id="lockoutValue">—</div><div class="metric-sub">Failed PIN protection</div></div>
-    </div>
-    <p class="tiny" id="deviceUpdated" style="margin:12px 0 0">Belum menerima telemetry ESP32.</p>
-  </section>
+    <section class="page" id="page-monitoring">
+      <div class="card"><div class="card-head"><div class="card-title">📡 DEVICE MONITORING</div><span class="eyebrow">REAL-TIME TELEMETRY</span></div><div class="metrics">
+        <div class="metric"><div class="metric-label">WI-FI</div><div class="metric-value" id="wifiValue">—</div><div class="metric-sub" id="rssiValue">RSSI —</div></div><div class="metric"><div class="metric-label">MQTT</div><div class="metric-value" id="mqttValue">—</div><div class="metric-sub">EMQX broker</div></div><div class="metric"><div class="metric-label">SENSOR PINTU</div><div class="metric-value" id="sensorValue">—</div><div class="metric-sub">GPIO 34</div></div><div class="metric"><div class="metric-label">FINGERPRINT</div><div class="metric-value" id="fingerValue">—</div><div class="metric-sub" id="fingerSub">UART sensor</div></div><div class="metric"><div class="metric-label">ALARM</div><div class="metric-value" id="alarmValue">—</div><div class="metric-sub">Intruder detection</div></div><div class="metric"><div class="metric-label">EMERGENCY</div><div class="metric-value" id="emergencyValue">—</div><div class="metric-sub">Access override</div></div><div class="metric"><div class="metric-label">UPTIME</div><div class="metric-value" id="uptimeValue">—</div><div class="metric-sub">Since ESP32 boot</div></div><div class="metric"><div class="metric-label">LOCKOUT</div><div class="metric-value" id="lockoutValue">—</div><div class="metric-sub">Failed PIN protection</div></div>
+      </div><p class="tiny" id="deviceUpdated" style="margin:12px 0 0">Belum menerima telemetry ESP32.</p></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">👤 PIN TAMU</div><span class="pill" id="guestState">NONAKTIF</span></div>
-    <p class="muted">PIN sementara, dibatasi masa aktif dan jumlah pemakaian. PIN tamu dihapus otomatis saat ESP32 reboot.</p>
-    <div class="form-grid">
-      <div class="full"><label for="guestAdminPin">PIN MASTER</label><input id="guestAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master"></div>
-      <div class="full"><label for="guestNewPin">PIN TAMU BARU</label><input id="guestNewPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="4–8 angka, berbeda dari master"></div>
-      <div><label for="guestTtl">MASA AKTIF (MENIT)</label><input id="guestTtl" type="number" min="1" max="10080" value="60"></div>
-      <div><label for="guestMax">BATAS PAKAI</label><input id="guestMax" type="number" min="1" max="20" value="5"></div>
-    </div>
-    <button class="primary" id="saveGuest" disabled>BUAT PIN TAMU</button>
-    <div class="inline-actions" style="margin-top:8px"><button class="secondary" id="revokeGuest" disabled>CABUT PIN TAMU</button></div>
-    <div class="message" id="guestMessage">Belum ada PIN tamu.</div>
-    <div class="tiny" id="guestUsage">Sisa penggunaan: —</div>
-  </section>
+    <section class="page" id="page-guest">
+      <div class="card" style="max-width:650px"><div class="card-head"><div class="card-title">👤 PIN TAMU</div><span class="pill" id="guestState">NONAKTIF</span></div><p class="muted">PIN sementara dengan masa aktif dan batas penggunaan. PIN tamu dihapus otomatis saat ESP32 reboot.</p><div class="form-grid"><div class="full"><label for="guestAdminPin">PIN MASTER</label><input id="guestAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master"></div><div class="full"><label for="guestNewPin">PIN TAMU BARU</label><input id="guestNewPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="4–8 angka, berbeda dari master"></div><div><label for="guestTtl">MASA AKTIF (MENIT)</label><input id="guestTtl" type="number" min="1" max="10080" value="60"></div><div><label for="guestMax">BATAS PAKAI</label><input id="guestMax" type="number" min="1" max="20" value="5"></div></div><button class="primary" id="saveGuest" disabled>BUAT PIN TAMU</button><div class="inline-actions" style="margin-top:8px"><button class="secondary" id="revokeGuest" disabled>CABUT PIN TAMU</button></div><div class="message" id="guestMessage">Belum ada PIN tamu.</div><div class="tiny" id="guestUsage">Sisa penggunaan: —</div></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">🆘 EMERGENCY LOCK</div><span class="pill warn">PRIORITAS TINGGI</span></div>
-    <p class="muted">Mengunci aktuator dan menolak autentikasi keypad, PIN web, PIN tamu, serta fingerprint sampai dinonaktifkan dengan PIN master.</p>
-    <button class="danger" id="emergencyOn" disabled>AKTIFKAN EMERGENCY LOCK</button>
-    <label for="emergencyAdminPin" style="margin-top:13px">PIN MASTER UNTUK MENONAKTIFKAN</label>
-    <input id="emergencyAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master">
-    <button class="warning" id="emergencyOff" disabled>NONAKTIFKAN EMERGENCY LOCK</button>
-    <div class="message" id="emergencyMessage">Perintah emergency membutuhkan koneksi MQTT.</div>
-  </section>
+    <section class="page" id="page-emergency">
+      <div class="card" style="max-width:650px"><div class="card-head"><div class="card-title">🆘 EMERGENCY LOCK</div><span class="pill warn">PRIORITAS TINGGI</span></div><p class="muted">Mengunci aktuator dan menolak autentikasi keypad, PIN web, PIN tamu, serta fingerprint sampai dinonaktifkan dengan PIN master.</p><button class="danger" id="emergencyOn" disabled>AKTIFKAN EMERGENCY LOCK</button><label for="emergencyAdminPin" style="margin-top:13px">PIN MASTER UNTUK MENONAKTIFKAN</label><input id="emergencyAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master"><button class="warning" id="emergencyOff" disabled>NONAKTIFKAN EMERGENCY LOCK</button><div class="message" id="emergencyMessage">Perintah emergency membutuhkan koneksi MQTT.</div></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">👆 FINGERPRINT FISIK</div><span class="pill" id="fingerPill">BELUM DIKETAHUI</span></div>
-    <p class="muted">Enroll sidik jari melalui modul UART AS608/R307. Wokwi tanpa modul fisik akan menampilkan status tidak tersedia.</p>
-    <label for="fingerAdminPin">PIN MASTER</label><input id="fingerAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master">
-    <label for="fingerId">ID SIDIK JARI (1–127)</label><input id="fingerId" type="number" min="1" max="127" value="1">
-    <button class="primary" id="enrollFinger" disabled>DAFTARKAN SIDIK JARI</button>
-    <button class="secondary" id="cancelFinger" disabled style="width:100%;margin-top:8px">BATALKAN ENROLLMENT</button>
-    <div class="message" id="fingerMessage">Sensor belum terdeteksi.</div>
-  </section>
+    <section class="page" id="page-fingerprint">
+      <div class="card" style="max-width:650px"><div class="card-head"><div class="card-title">👆 FINGERPRINT FISIK</div><span class="pill" id="fingerPill">BELUM DIKETAHUI</span></div><p class="muted">Enroll sidik jari melalui modul UART AS608/R307. Wokwi tanpa modul fisik akan menampilkan status tidak tersedia.</p><label for="fingerAdminPin">PIN MASTER</label><input id="fingerAdminPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN master"><label for="fingerId">ID SIDIK JARI (1–127)</label><input id="fingerId" type="number" min="1" max="127" value="1"><button class="primary" id="enrollFinger" disabled>DAFTARKAN SIDIK JARI</button><button class="secondary" id="cancelFinger" disabled style="width:100%;margin-top:8px">BATALKAN ENROLLMENT</button><div class="message" id="fingerMessage">Sensor belum terdeteksi.</div></div>
+    </section>
 
-  <section class="card">
-    <div class="card-head"><div class="card-title">📈 STATISTIK PENGGUNAAN</div><span class="eyebrow">BROWSER INI</span></div>
-    <div class="stats">
-      <div class="stat"><div class="stat-num" id="statUnlock">0</div><div class="stat-label">PINTU DIBUKA</div></div>
-      <div class="stat"><div class="stat-num" id="statLock">0</div><div class="stat-label">PINTU DIKUNCI</div></div>
-      <div class="stat"><div class="stat-num" id="statFailed">0</div><div class="stat-label">PIN DITOLAK</div></div>
-      <div class="stat"><div class="stat-num" id="statAlarm">0</div><div class="stat-label">ALARM</div></div>
-      <div class="stat"><div class="stat-num" id="statGuest">0</div><div class="stat-label">AKSES TAMU</div></div>
-      <div class="stat"><div class="stat-num" id="statFinger">0</div><div class="stat-label">AKSES FINGERPRINT</div></div>
-      <div class="stat"><div class="stat-num" id="statWeb">0</div><div class="stat-label">AKSES DASHBOARD</div></div>
-      <div class="stat"><div class="stat-num" id="statKeypad">0</div><div class="stat-label">AKSES KEYPAD</div></div>
-    </div>
-    <p class="tiny" style="margin:11px 0 0">Statistik dihitung dari event MQTT yang diterima browser ini dan tersimpan lokal; bukan penghitung historis di server.</p>
-  </section>
+    <section class="page" id="page-statistics">
+      <div class="card"><div class="card-head"><div class="card-title">📈 STATISTIK PENGGUNAAN</div><span class="eyebrow">BROWSER INI</span></div><div class="stats"><div class="stat"><div class="stat-num" id="statUnlock">0</div><div class="stat-label">PINTU DIBUKA</div></div><div class="stat"><div class="stat-num" id="statLock">0</div><div class="stat-label">PINTU DIKUNCI</div></div><div class="stat"><div class="stat-num" id="statFailed">0</div><div class="stat-label">PIN DITOLAK</div></div><div class="stat"><div class="stat-num" id="statAlarm">0</div><div class="stat-label">ALARM</div></div><div class="stat"><div class="stat-num" id="statGuest">0</div><div class="stat-label">AKSES TAMU</div></div><div class="stat"><div class="stat-num" id="statFinger">0</div><div class="stat-label">AKSES FINGERPRINT</div></div><div class="stat"><div class="stat-num" id="statWeb">0</div><div class="stat-label">AKSES DASHBOARD</div></div><div class="stat"><div class="stat-num" id="statKeypad">0</div><div class="stat-label">AKSES KEYPAD</div></div></div><p class="tiny" style="margin:11px 0 0">Statistik dihitung dari event MQTT yang diterima browser ini dan tersimpan lokal; bukan penghitung historis server.</p></div>
+    </section>
 
-  <section class="card span2">
-    <div class="card-head"><div class="card-title">⚡ LIVE ACTIVITY</div><div class="inline-actions"><button class="secondary" id="clearHistory">RESET HISTORI & STATISTIK</button></div></div>
-    <div id="historyList" class="history"><p class="muted">Belum ada aktivitas yang diterima.</p></div>
-  </section>
+    <section class="page" id="page-activity">
+      <div class="card"><div class="card-head"><div class="card-title">⚡ LIVE ACTIVITY</div><button class="secondary" id="clearHistory">RESET HISTORI & STATISTIK</button></div><div id="historyList" class="history"><p class="muted">Belum ada aktivitas yang diterima.</p></div></div>
+    </section>
 
-  <section class="card span2">
-    <div class="card-head"><div class="card-title">⚙️ PENGATURAN & SIMULASI</div><span class="eyebrow">MAINTENANCE</span></div>
-    <div class="grid" style="gap:12px">
-      <div>
-        <label for="oldPin">PIN MASTER LAMA</label><input id="oldPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN lama">
-        <label for="newPin">PIN MASTER BARU</label><input id="newPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="4–8 angka">
-        <label for="confirmPin">KONFIRMASI PIN BARU</label><input id="confirmPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Ulangi PIN baru">
-        <button class="primary" id="savePin" disabled>GANTI PIN MASTER</button>
-        <div class="message" id="changeMessage">PIN master disimpan oleh ESP32.</div>
-      </div>
-      <div class="stack" style="align-content:start">
-        <button class="danger" id="simulateForced" disabled>SIMULASIKAN PAKSA BUKA</button>
-        <p class="muted">Sama seperti menekan tombol merah sensor pintu di diagram Wokwi. Gunakan untuk menguji intruder detection dan alarm.</p>
-        <div class="pill" id="lastTelemetry">TELEMETRY: MENUNGGU</div>
-        <p class="tiny">Topik tetap: <code>DEVICE_ID/command</code>, <code>DEVICE_ID/status</code>, dan <code>DEVICE_ID/event</code>.</p>
-      </div>
-    </div>
-  </section>
+    <section class="page" id="page-settings">
+      <div class="grid"><div class="card"><div class="card-head"><div class="card-title">⚙️ GANTI PIN MASTER</div></div><label for="oldPin">PIN MASTER LAMA</label><input id="oldPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="PIN lama"><label for="newPin">PIN MASTER BARU</label><input id="newPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="4–8 angka"><label for="confirmPin">KONFIRMASI PIN BARU</label><input id="confirmPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Ulangi PIN baru"><button class="primary" id="savePin" disabled>GANTI PIN MASTER</button><div class="message" id="changeMessage">PIN master disimpan oleh ESP32.</div></div><div class="card"><div class="card-head"><div class="card-title">🧪 UJI SENSOR & MQTT</div><span class="eyebrow">MAINTENANCE</span></div><button class="danger" id="simulateForced" disabled>SIMULASIKAN PAKSA BUKA</button><p class="muted">Sama seperti menekan tombol merah sensor pintu di diagram Wokwi. Gunakan untuk menguji intruder detection dan alarm.</p><div class="pill" id="lastTelemetry">TELEMETRY: MENUNGGU</div><p class="tiny">Topik: <code>DEVICE_ID/command</code>, <code>DEVICE_ID/status</code>, dan <code>DEVICE_ID/event</code>.</p></div></div>
+    </section>
+    <footer>ARIES • SMART DOOR LOCK IoT • WOKWI + MQTT + GITHUB PAGES</footer>
+  </main>
 </div>
-<footer>ARIES • SMART DOOR LOCK IoT • WOKWI + MQTT + GITHUB PAGES</footer>
-</main>
-
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <script>
 // Keep these identifiers identical to sketch.ino.
@@ -187,7 +122,7 @@ const TOPIC_COMMAND = DEVICE_ID + "/command";
 const TOPIC_STATUS = DEVICE_ID + "/status";
 const TOPIC_EVENT = DEVICE_ID + "/event";
 const BROKER_URL = "wss://broker.emqx.io:8084/mqtt";
-const HISTORY_KEY = "aries_history_v3";
+const HISTORY_KEY = "aries_history_v4";
 const $ = id => document.getElementById(id);
 let client = null;
 let mqttConnected = false;
@@ -195,6 +130,8 @@ let enteredPin = "";
 let emergencyActive = false;
 let fingerprintReady = false;
 let guestActive = false;
+let lockoutReportedActive = false;
+let lockoutUntilClientMs = 0;
 
 function readHistory(){
   try { const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]"); return Array.isArray(v)?v:[]; }
@@ -265,6 +202,35 @@ function recordEvent(code,source,detail){
   return message;
 }
 function setMessage(id,text){$(id).textContent=text;}
+function setLockoutState(active, seconds){
+  lockoutReportedActive = !!active;
+  lockoutUntilClientMs = active ? Date.now() + Math.max(0, Number(seconds)||0) * 1000 : 0;
+  renderLockoutCountdown();
+}
+function renderLockoutCountdown(){
+  const remaining = lockoutReportedActive ? Math.max(0, Math.ceil((lockoutUntilClientMs-Date.now())/1000)) : 0;
+  $("lockoutBanner").classList.toggle("hidden", !lockoutReportedActive);
+  $("lockoutCountdown").textContent = remaining > 0 ? String(remaining).padStart(2,"0") : "…";
+  $("lockoutText").textContent = !lockoutReportedActive ? "" : remaining > 0 ? "Akses diblokir sementara setelah 3 PIN salah." : "Waktu selesai. Menunggu konfirmasi pembukaan lockout dari ESP32…";
+  $("lockoutValue").textContent = !lockoutReportedActive ? "OFF" : remaining > 0 ? remaining + " dtk" : "MENUNGGU";
+  $("lockoutValueHome").textContent = !lockoutReportedActive ? "OFF" : remaining > 0 ? remaining + " dtk" : "MENUNGGU";
+  const blocked = lockoutReportedActive || emergencyActive;
+  $("unlock").disabled = !mqttConnected || enteredPin.length < 4 || blocked;
+  document.querySelectorAll("[data-key]").forEach(button => { button.disabled = lockoutReportedActive || emergencyActive || !mqttConnected; });
+}
+function showPage(name, updateHash=true){
+  const allowed = ["home","access","monitoring","guest","emergency","fingerprint","statistics","activity","settings"];
+  if(!allowed.includes(name)) name="home";
+  document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id==="page-"+name));
+  document.querySelectorAll("[data-page]").forEach(button=>button.classList.toggle("active",button.dataset.page===name));
+  const titles={home:["Dashboard","Ringkasan kondisi ARIES dan akses cepat."],access:["Akses PIN","Masukkan PIN master atau PIN tamu."],monitoring:["Device Monitoring","Kondisi ESP32, jaringan, sensor, dan aktuator."],guest:["PIN Tamu","Buat dan cabut akses sementara."],emergency:["Emergency Lock","Kunci darurat dan pemulihan dengan PIN master."],fingerprint:["Fingerprint","Pendaftaran sidik jari melalui sensor UART fisik."],statistics:["Statistik","Ringkasan event yang diterima browser ini."],activity:["Live Activity","Riwayat event langsung dari ESP32 melalui MQTT."],settings:["Pengaturan","Ubah PIN master dan uji deteksi intruder."]};
+  $("pageTitle").textContent=titles[name][0];
+  $("pageSubtitle").textContent=titles[name][1];
+  if(updateHash && location.hash!=="#"+name) history.replaceState(null,"", "#"+name);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-page]").forEach(button=>button.addEventListener("click",()=>showPage(button.dataset.page)));
+document.querySelectorAll("[data-goto]").forEach(button=>button.addEventListener("click",()=>showPage(button.dataset.goto)));
 function setConnection(connected,text){
   mqttConnected=connected;
   $("connectionDot").className=connected?"dot on":"dot";
@@ -272,11 +238,12 @@ function setConnection(connected,text){
   ["lock","savePin","saveGuest","revokeGuest","emergencyOn","emergencyOff","simulateForced","enrollFinger"].forEach(id=>$(id).disabled=!connected);
   $("cancelFinger").disabled=!connected;
   updatePinDisplay();
+  renderLockoutCountdown();
 }
 function updatePinDisplay(){
   $("pinDisplay").textContent=enteredPin.length?"●".repeat(enteredPin.length):"••••••";
   $("pinCount").textContent=enteredPin.length+"/8";
-  $("unlock").disabled=!mqttConnected||enteredPin.length<4;
+  $("unlock").disabled=!mqttConnected||enteredPin.length<4||lockoutReportedActive||emergencyActive;
 }
 function publishCommand(command,args=[]){
   if(!client||!client.connected){setMessage("pinMessage","MQTT belum terhubung.");return false;}
@@ -288,11 +255,13 @@ function sendPinProgress(){if(mqttConnected)publishCommand("WEB_PROGRESS",[enter
 function clearPin(send=true){enteredPin="";updatePinDisplay();if(send&&mqttConnected)publishCommand("WEB_CLEAR");}
 
 document.querySelectorAll("[data-key]").forEach(button=>button.addEventListener("click",()=>{
+  if(lockoutReportedActive||emergencyActive||!mqttConnected){setMessage("pinMessage",lockoutReportedActive?"Akses terkunci. Tunggu countdown selesai.":"Keypad web menunggu koneksi MQTT.");return;}
   const key=button.dataset.key;
   if(key==="clear")enteredPin="";else if(key==="back")enteredPin=enteredPin.slice(0,-1);else if(enteredPin.length<8)enteredPin+=key;
   updatePinDisplay();setMessage("pinMessage","PIN akan diverifikasi oleh ESP32.");sendPinProgress();
 }));
 $("unlock").addEventListener("click",()=>{
+  if(lockoutReportedActive||emergencyActive){setMessage("pinMessage",lockoutReportedActive?"Akses terkunci sementara. Tunggu countdown.":"Emergency lock sedang aktif.");return;}
   if(!/^\d{4,8}$/.test(enteredPin)){setMessage("pinMessage","Masukkan PIN 4–8 angka.");return;}
   if(publishCommand("WEB_PIN",[enteredPin])){setMessage("pinMessage","Permintaan verifikasi dikirim ke ESP32.");clearPin(false);}
 });
@@ -366,12 +335,14 @@ function showStatus(payload){
   setMetric("alarmValue",values.ALARM===undefined?"—":values.ALARM==="1"?"ACTIVE":"OFF");
   setMetric("emergencyValue",values.EMERGENCY===undefined?"—":values.EMERGENCY==="1"?"ACTIVE":"OFF");
   setMetric("uptimeValue",values.UPTIME!==undefined?formatDuration(Number(values.UPTIME)):"—");
-  setMetric("lockoutValue",values.LOCKOUT===undefined?"—":values.LOCKOUT==="1"?"ACTIVE":"OFF");
+  setLockoutState(values.LOCKOUT==="1", Number(values.LOCKOUT_REMAINING||0));
   emergencyActive=values.EMERGENCY==="1";
+  renderLockoutCountdown();
   guestActive=values.GUEST==="1";
   $("emergencyBanner").classList.toggle("hidden",!emergencyActive);
   $("emergencyPill").textContent="EMERGENCY: "+(emergencyActive?"ON":"OFF");
   $("emergencyPill").className=emergencyActive?"pill bad":"pill";
+  $("emergencyValueHome").textContent=emergencyActive?"AKTIF":"OFF";
   $("emergencyOn").disabled=!mqttConnected||emergencyActive;
   $("emergencyOff").disabled=!mqttConnected||!emergencyActive;
   $("guestState").textContent=guestActive?"AKTIF":"NONAKTIF";
@@ -398,12 +369,13 @@ function handleEvent(payload){
   $("pinMessage").textContent=message;
   if(code==="FORCED_OPEN"||code==="ALARM_STARTED")$("alarmBanner").classList.remove("hidden");
   if(code==="ALARM_ENDED"||code==="ALARM_CLEARED")$("alarmBanner").classList.add("hidden");
-  if(code==="EMERGENCY_LOCK_ON"){$("emergencyBanner").classList.remove("hidden");emergencyActive=true;}
-  if(code==="EMERGENCY_LOCK_OFF"){$("emergencyBanner").classList.add("hidden");emergencyActive=false;}
+  if(code==="EMERGENCY_LOCK_ON"){$("emergencyBanner").classList.remove("hidden");emergencyActive=true;updatePinDisplay();renderLockoutCountdown();}
+  if(code==="EMERGENCY_LOCK_OFF"){$("emergencyBanner").classList.add("hidden");emergencyActive=false;updatePinDisplay();renderLockoutCountdown();}
   if(code==="PIN_CHANGED")setMessage("changeMessage","PIN master berhasil diganti di ESP32. PIN tamu lama dicabut.");
   if(code==="PIN_CHANGE_REJECTED")setMessage("changeMessage","PIN lama salah atau PIN baru tidak valid.");
   if(code==="PIN_REJECTED")setMessage("pinMessage","PIN salah. Periksa kembali.");
-  if(code==="PIN_LOCKOUT")setMessage("pinMessage","Terlalu banyak percobaan. Tunggu 30 detik.");
+  if(code==="PIN_LOCKOUT"){const secondsMatch=detail.match(/SECONDS=(\d+)/);const seconds=secondsMatch?Number(secondsMatch[1]):30;setMessage("pinMessage","Terlalu banyak percobaan. Akses terkunci sementara.");setLockoutState(true,seconds);}
+  if(code==="LOCKOUT_ENDED"){setLockoutState(false,0);setMessage("pinMessage","Lockout selesai. Silakan coba kembali.");}
   if(code==="GUEST_PIN_SET")setMessage("guestMessage","PIN tamu berhasil dibuat di ESP32.");
   if(code==="GUEST_PIN_REVOKED"||code==="GUEST_PIN_EXPIRED"||code==="GUEST_PIN_LIMIT_REACHED")setMessage("guestMessage","PIN tamu sudah tidak aktif.");
   if(code.startsWith("FINGER_ENROLL")||code.startsWith("FINGERPRINT_SENSOR")){setMessage("fingerMessage",message);}
@@ -434,7 +406,7 @@ function startMQTT(){
   });
 }
 
-renderHistory();updateStats();updatePinDisplay();setConnection(false,"OFFLINE");startMQTT();
+renderHistory();updateStats();updatePinDisplay();setConnection(false,"OFFLINE");showPage((location.hash||"#home").slice(1),false);setInterval(renderLockoutCountdown,250);startMQTT();
 </script>
 </body>
 </html>
