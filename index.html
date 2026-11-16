@@ -1,7 +1,8 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080d17">
 <title>ARIES</title>
@@ -10,100 +11,110 @@
 :root {
   --bg:#080d17;
   --panel:#111c2d;
-  --line:#25344a;
-  --muted:#91a3ba;
-  --blue:#38bdf8;
+  --line:#26364b;
+  --muted:#94a3b8;
   --green:#22c55e;
+  --blue:#0284c7;
 }
 * {box-sizing:border-box}
 body {
   margin:0;
   min-height:100vh;
+  padding:22px;
   background:var(--bg);
   color:white;
-  font-family:system-ui,sans-serif;
+  font-family:system-ui,-apple-system,sans-serif;
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:20px;
 }
-main {width:100%;max-width:420px}
+main {width:100%;max-width:430px}
 header {text-align:center;margin-bottom:30px}
-.logo {font-size:42px;font-weight:900;letter-spacing:5px}
-.sub {font-size:11px;color:var(--muted);letter-spacing:3px}
+.logo {
+  font-size:43px;
+  font-weight:900;
+  letter-spacing:7px;
+}
+.subtitle {
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:4px;
+}
 .card {
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:23px;
-  padding:24px;
+  padding:23px;
   margin-bottom:15px;
 }
-h2 {font-size:25px;margin:0 0 22px}
+.hidden {display:none!important}
+h2 {font-size:26px;margin:0 0 20px}
 input {
   width:100%;
-  padding:17px;
-  border-radius:13px;
+  padding:18px;
+  background:var(--bg);
   border:1px solid var(--line);
-  background:#080d17;
+  border-radius:14px;
   color:white;
-  font-size:17px;
+  font-size:18px;
   outline:none;
 }
 button {
   width:100%;
+  padding:18px;
   border:0;
   border-radius:14px;
-  padding:18px;
+  margin-top:12px;
   font-size:17px;
   font-weight:800;
   color:white;
   cursor:pointer;
-  margin-top:12px;
 }
-button:disabled {opacity:.4}
-.primary {background:#0369a1}
-.fingerprint {background:#1e293b}
-.hidden {display:none!important}
+button:disabled {opacity:.35;cursor:not-allowed}
+.primary {background:var(--blue)}
+.bio {background:#26364b}
+.secondary {background:#263449}
+.open {background:#15803d}
+.close {background:#334155}
 .muted {color:var(--muted);font-size:13px}
-.status {
-  font-size:34px;
+.big {
+  font-size:35px;
   font-weight:900;
   margin:15px 0 5px;
 }
-.online {color:var(--green)}
-.offline {color:#fb7185}
 .actions {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-top:25px;
+  margin-top:24px;
 }
-.actions button {height:85px;margin:0}
-.open {background:#15803d}
-.close {background:#334155}
-.top {
+.actions button {margin:0;min-height:85px}
+.connection {
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  gap:10px;
+  margin-top:12px;
+  font-weight:700;
 }
 .dot {
-  display:inline-block;
-  width:9px;height:9px;
+  width:10px;
+  height:10px;
   border-radius:50%;
   background:#64748b;
-  margin-right:7px;
 }
 .dot.on {background:var(--green)}
 #log {
-  font-size:12px;
   color:var(--muted);
-  min-height:18px;
-  margin-top:18px;
+  font-size:13px;
+  line-height:1.6;
+  min-height:20px;
   word-break:break-word;
 }
-.logout {
-  background:#263449;
-  font-size:14px;
+footer {
+  text-align:center;
+  color:#64748b;
+  font-size:11px;
+  margin-top:25px;
 }
 </style>
 </head>
@@ -113,22 +124,26 @@ button:disabled {opacity:.4}
 
 <header>
   <div class="logo">ARIES</div>
-  <div class="sub">SMART ACCESS</div>
+  <div class="subtitle">SMART ACCESS</div>
 </header>
 
 <!-- LOGIN -->
 <section id="login" class="card">
   <h2>Selamat datang</h2>
 
-  <input id="password" type="password"
-  placeholder="Password">
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+    autocomplete="current-password"
+  >
 
-  <button class="primary" onclick="loginPassword()">
+  <button class="primary" id="passwordLogin">
     MASUK
   </button>
 
-  <button class="fingerprint" onclick="loginFingerprint()">
-    <span style="font-size:24px">◎</span><br>
+  <button class="bio" id="fingerprintLogin">
+    <div style="font-size:29px">◎</div>
     FINGERPRINT
   </button>
 
@@ -139,48 +154,66 @@ button:disabled {opacity:.4}
 <section id="dashboard" class="hidden">
 
   <div class="card">
-    <div class="top">
-      <span class="muted">KONEKSI</span>
-      <span class="muted" id="connectionText">OFFLINE</span>
-    </div>
+    <div class="muted">KONEKSI MQTT</div>
 
-    <div style="margin-top:12px">
+    <div class="connection">
       <span class="dot" id="connectionDot"></span>
-      <span class="muted">MQTT BROKER</span>
+      <span id="connectionText">OFFLINE</span>
     </div>
   </div>
 
   <div class="card">
     <div class="muted">STATUS PINTU</div>
-    <div class="status" id="doorState">MENUNGGU</div>
-    <div class="muted" id="doorDesc">Menunggu ESP32</div>
+
+    <div class="big" id="doorState">MENUNGGU</div>
+
+    <div class="muted" id="doorDesc">
+      Menunggu status ESP32
+    </div>
 
     <div class="actions">
       <button class="open" id="unlock" disabled>
-        <span style="font-size:23px">↗</span><br>BUKA
+        ↗<br>BUKA
       </button>
+
       <button class="close" id="lock" disabled>
-        <span style="font-size:23px">⌑</span><br>KUNCI
+        ⌑<br>KUNCI
       </button>
     </div>
   </div>
 
   <div class="card">
-    <div class="muted">AKTIVITAS</div>
-    <div id="log">Memulai...</div>
+    <div class="muted">FINGERPRINT</div>
+
+    <p class="muted" id="fingerprintStatus">
+      Belum ada passkey terdaftar.
+    </p>
+
+    <button class="bio" id="registerFingerprint">
+      DAFTARKAN FINGERPRINT
+    </button>
   </div>
 
-  <button class="logout" onclick="logout()">KELUAR</button>
+  <div class="card">
+    <div class="muted">AKTIVITAS</div>
+    <p id="log">ARIES siap.</p>
+  </div>
+
+  <button class="secondary" id="logout">
+    KELUAR
+  </button>
+
 </section>
 
+<footer>ARIES • SMART ACCESS</footer>
 </main>
 
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
 <script>
-// ==================================
-// KONFIGURASI MQTT - TETAP
-// ==================================
+// ======================================
+// KONFIGURASI WOKWI - JANGAN DIUBAH
+// ======================================
 
 const DEVICE_ID = "ariesharianto-smartlock-demo-7f3a91";
 const DEMO_TOKEN = "ARIES-DEMO-LOCK-7F3A91";
@@ -189,61 +222,221 @@ const TOPIC_COMMAND = DEVICE_ID + "/command";
 const TOPIC_STATUS = DEVICE_ID + "/status";
 const BROKER_URL = "wss://broker.emqx.io:8084/mqtt";
 
-// ==================================
-// LOGIN DEMO
-// ==================================
+// ======================================
+// PENGATURAN LOGIN DEMO
+// ======================================
 
-// GANTI PASSWORD INI
+// GANTI PASSWORD DI SINI
 const APP_PASSWORD = "123456";
 
-let client;
+const PASSKEY_KEY = "aries_passkey_id";
 let authenticated = false;
+let client = null;
 
-function loginPassword() {
-  const pass = document.getElementById("password").value;
+const $ = id => document.getElementById(id);
 
-  if(pass === APP_PASSWORD) {
-    enterDashboard();
-  } else {
-    document.getElementById("loginMessage").textContent =
-      "Password salah!";
-  }
+// ======================================
+// UTILITAS WEB AUTHN
+// ======================================
+
+function base64url(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+
+  bytes.forEach(byte => binary += String.fromCharCode(byte));
+
+  return btoa(binary)
+    .replace(/\+/g,"-")
+    .replace(/\//g,"_")
+    .replace(/=/g,"");
 }
 
-// ==================================
-// FINGERPRINT / PASSKEY
-// ==================================
+function fromBase64url(value) {
+  const base64 = value
+    .replace(/-/g,"+")
+    .replace(/_/g,"/");
 
-// Memerlukan passkey yang sudah terdaftar.
-// Tombol ini tidak otomatis mendaftarkan sidik jari.
-async function loginFingerprint() {
+  const binary = atob(
+    base64 + "=".repeat((4-base64.length%4)%4)
+  );
 
-  if(!window.PublicKeyCredential) {
-    alert("Perangkat atau browser tidak mendukung WebAuthn.");
-    return;
-  }
+  return Uint8Array.from(binary,c => c.charCodeAt(0));
+}
 
-  alert(
-    "Fingerprint memerlukan passkey yang sudah didaftarkan " +
-    "oleh layanan autentikasi. Versi HTML mandiri ini belum " +
-    "memiliki server untuk registrasi dan verifikasi passkey."
+function randomBytes(length=32) {
+  return crypto.getRandomValues(new Uint8Array(length));
+}
+
+function checkWebAuthn() {
+  return !!(
+    window.PublicKeyCredential &&
+    navigator.credentials &&
+    window.isSecureContext
   );
 }
 
-// ==================================
+// ======================================
+// LOGIN PASSWORD
+// ======================================
+
+function loginPassword() {
+  if($("password").value === APP_PASSWORD) {
+    enterDashboard();
+  } else {
+    $("loginMessage").textContent = "Password salah.";
+  }
+}
+
+$("passwordLogin").addEventListener("click",loginPassword);
+
+$("password").addEventListener("keydown",event => {
+  if(event.key === "Enter") loginPassword();
+});
+
+// ======================================
+// REGISTRASI PASSKEY
+// ======================================
+
+async function registerFingerprint() {
+
+  if(!authenticated) return;
+
+  if(!checkWebAuthn()) {
+    alert("Browser tidak mendukung WebAuthn atau bukan koneksi HTTPS.");
+    return;
+  }
+
+  try {
+
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        challenge: randomBytes(32),
+
+        rp: {
+          name: "ARIES",
+          id: location.hostname
+        },
+
+        user: {
+          id: randomBytes(16),
+          name: "aries-user",
+          displayName: "ARIES User"
+        },
+
+        pubKeyCredParams: [
+          {type:"public-key",alg:-7},
+          {type:"public-key",alg:-257}
+        ],
+
+        authenticatorSelection: {
+          authenticatorAttachment:"platform",
+          residentKey:"preferred",
+          userVerification:"required"
+        },
+
+        timeout:60000,
+        attestation:"none"
+      }
+    });
+
+    if(!credential) throw new Error("Registrasi dibatalkan.");
+
+    localStorage.setItem(
+      PASSKEY_KEY,
+      base64url(credential.rawId)
+    );
+
+    $("fingerprintStatus").textContent =
+      "Passkey berhasil dibuat pada perangkat ini.";
+
+    $("log").textContent =
+      "Registrasi passkey selesai (demo lokal).";
+
+    alert("Passkey berhasil didaftarkan!");
+
+  } catch(error) {
+    $("log").textContent = "Registrasi gagal: " + error.message;
+  }
+}
+
+$("registerFingerprint").addEventListener(
+  "click",registerFingerprint
+);
+
+// ======================================
+// LOGIN FINGERPRINT
+// ======================================
+
+async function loginFingerprint() {
+
+  if(!checkWebAuthn()) {
+    alert("WebAuthn tidak didukung. Gunakan HTTPS dan browser terbaru.");
+    return;
+  }
+
+  const savedId = localStorage.getItem(PASSKEY_KEY);
+
+  if(!savedId) {
+    $("loginMessage").textContent =
+      "Belum ada passkey. Login dengan password dan daftarkan fingerprint dahulu.";
+    return;
+  }
+
+  try {
+
+    const credential = await navigator.credentials.get({
+      publicKey: {
+        challenge:randomBytes(32),
+
+        rpId:location.hostname,
+
+        allowCredentials: [{
+          type:"public-key",
+          id:fromBase64url(savedId)
+        }],
+
+        userVerification:"required",
+        timeout:60000
+      }
+    });
+
+    if(!credential) throw new Error("Autentikasi dibatalkan.");
+
+    // DEMO SAJA:
+    // Tidak ada server untuk memverifikasi signature WebAuthn.
+    enterDashboard();
+
+  } catch(error) {
+    $("loginMessage").textContent =
+      "Fingerprint gagal: " + error.message;
+  }
+}
+
+$("fingerprintLogin").addEventListener(
+  "click",loginFingerprint
+);
+
+// ======================================
 // DASHBOARD
-// ==================================
+// ======================================
 
 function enterDashboard() {
+
   authenticated = true;
 
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
+  $("login").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+
+  $("fingerprintStatus").textContent =
+    localStorage.getItem(PASSKEY_KEY)
+      ? "Passkey terdaftar pada browser ini."
+      : "Belum ada passkey terdaftar.";
 
   startMQTT();
 }
 
 function logout() {
+
   authenticated = false;
 
   if(client) {
@@ -251,23 +444,24 @@ function logout() {
     client = null;
   }
 
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("password").value = "";
+  $("dashboard").classList.add("hidden");
+  $("login").classList.remove("hidden");
+  $("password").value = "";
 
   setConnection(false,"OFFLINE");
 }
 
-// ==================================
-// MQTT - PROTOKOL TETAP
-// ==================================
+$("logout").addEventListener("click",logout);
 
-const $ = id => document.getElementById(id);
+// ======================================
+// MQTT - PROTOKOL ASLI
+// ======================================
 
 const unlockButton = $("unlock");
 const lockButton = $("lock");
 
 function setConnection(connected,text) {
+
   $("connectionDot").className =
     connected ? "dot on" : "dot";
 
@@ -283,18 +477,24 @@ function showStatus(message) {
   const state = parts[0];
 
   if(state === "UNLOCKED") {
+
     $("doorState").textContent = "TERBUKA";
     $("doorState").style.color = "#22c55e";
-    $("doorDesc").textContent = "Pintu berhasil dibuka";
-  }
 
-  else if(state === "LOCKED") {
+    $("doorDesc").textContent =
+      "ESP32 mengonfirmasi pintu terbuka.";
+
+  } else if(state === "LOCKED") {
+
     $("doorState").textContent = "TERKUNCI";
     $("doorState").style.color = "#cbd5e1";
-    $("doorDesc").textContent = "Pintu berhasil dikunci";
-  }
 
-  else return;
+    $("doorDesc").textContent =
+      "ESP32 mengonfirmasi pintu terkunci.";
+
+  } else {
+    return;
+  }
 
   $("log").textContent =
     "Terakhir diperbarui: " +
@@ -312,18 +512,21 @@ function sendCommand(command) {
   );
 
   $("log").textContent =
-    command === "UNLOCK"
-    ? "Perintah buka dikirim..."
-    : "Perintah kunci dikirim...";
+    "Perintah " + command + " dikirim. Menunggu konfirmasi...";
 }
 
-unlockButton.addEventListener("click",() => sendCommand("UNLOCK"));
-lockButton.addEventListener("click",() => sendCommand("LOCK"));
+unlockButton.addEventListener(
+  "click",() => sendCommand("UNLOCK")
+);
+
+lockButton.addEventListener(
+  "click",() => sendCommand("LOCK")
+);
 
 function startMQTT() {
 
   if(typeof mqtt === "undefined") {
-    $("log").textContent = "MQTT.js gagal dimuat";
+    $("log").textContent = "MQTT.js gagal dimuat.";
     return;
   }
 
@@ -342,15 +545,15 @@ function startMQTT() {
     setConnection(true,"ONLINE");
 
     client.subscribe(TOPIC_STATUS,{qos:0},err => {
-      $("log").textContent = err
-        ? "Gagal menerima status"
-        : "Terhubung ke Wokwi";
-    });
 
+      $("log").textContent = err
+        ? "Gagal subscribe status: " + err.message
+        : "Terhubung. Menunggu status ESP32...";
+    });
   });
 
   client.on("reconnect",() =>
-    setConnection(false,"MENGHUBUNGKAN")
+    setConnection(false,"MENGHUBUNGKAN...")
   );
 
   client.on("offline",() =>
@@ -358,16 +561,21 @@ function startMQTT() {
   );
 
   client.on("error",err => {
+
     setConnection(false,"ERROR");
-    $("log").textContent = "MQTT: " + err.message;
+
+    $("log").textContent =
+      "MQTT error: " + err.message;
   });
 
   client.on("message",(topic,payload) => {
+
     if(topic === TOPIC_STATUS) {
       showStatus(payload.toString());
     }
   });
 }
 </script>
+
 </body>
 </html>
